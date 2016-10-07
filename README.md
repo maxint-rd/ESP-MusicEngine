@@ -1,4 +1,5 @@
 # ESP-MusicEngine
+
 ### Credits/references
 MusicEngine library ported from mBed to ESP8266 (tested in Arduino IDE v1.6.10)<br>
 MusicEngine class / Retro  Music Engine<br>
@@ -6,13 +7,14 @@ Original author: Chris Taylor (taylorza)<br>
 see https://developer.mbed.org/users/taylorza/code/MusicEngine/<br>
 Ported from mBed to ESP8266/Arduino by MMOLE (maxint-rd)
 
-MusicEngine provides a means to play Music Macro Language sequences asynchronously.<br>Learn more about Music Macro Language (MML) on wikipedia:<br>
+MusicEngine provides a means to play Music Macro Language sequences asynchronously.<br>
+Learn more about Music Macro Language (MML) on wikipedia:<br>
    http://en.wikipedia.org/wiki/Music_Macro_Language<br>
    For music see http://www.archeagemmllibrary.com/
 
 ================================
-### Usage
-The current version is not built as an Arduino library yet. Just add the files to your project.
+### Installation/Usage
+The current version can be downloaded as an Arduino library using the Sketch|Library menu. Just add the zipfile library and the enclosed examples should appear in the menu automatically.
 
 Initialisation outside of Setup():
 ```
