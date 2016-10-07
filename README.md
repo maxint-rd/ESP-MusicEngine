@@ -1,5 +1,5 @@
 # ESP-MusicEngine
-MusicEngine library ported from mBed to ESP8266<br>
+MusicEngine library ported from mBed to ESP8266 (Arduino IDE)<br>
 MusicEngine class / Retro  Music Engine<br>
 Original author: Chris Taylor (taylorza)<br>
 see https://developer.mbed.org/users/taylorza/code/MusicEngine/<br>
@@ -30,10 +30,10 @@ Short syntax overview:<br>
   Nnn  - Play frequency 0-96. Example: N48<br>
   #    - Play sharp note. Example: C#<br>
   &plus;    - Alternative for #<br>
-  &minus;    - Play flat note. Example: D-<br>
+  &minus;    - Play flat note. Example: D-&nbsp;<br>
   R    - Rest. Example:  CDEC r CDEC<br>
   P    - Alternative for R. Example:  CDEC p CDEC<br>
-  .    - Longer note. Example: CDEC.<br>
-  &gt; - shift actave up.  Example: CDE&gt;CDE.<br>
-  &lt; - shift actave down.  Example: CDE&lt;CDE.<br>
+  .    - Longer note. Example: CDEC.&nbsp;<br>
+  &gt; - shift actave up.  Example: CDE&gt;CDE.&nbsp;<br>
+  &lt; - shift actave down.  Example: CDE&lt;CDE.&nbsp;<br>
  Music notation is case-insensitive. Spaces can be used.
