@@ -1,5 +1,5 @@
 # ESP-MusicEngine
-MusicEngine library ported from mBed to ESP8266 (Arduino IDE)<br>
+MusicEngine library ported from mBed to ESP8266 (tested in Arduino IDE v1.6.10)<br>
 MusicEngine class / Retro  Music Engine<br>
 Original author: Chris Taylor (taylorza)<br>
 see https://developer.mbed.org/users/taylorza/code/MusicEngine/<br>
