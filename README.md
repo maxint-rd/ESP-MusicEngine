@@ -22,18 +22,18 @@ Then to play music where you want:<br>
   music.play("T240 L16 O6 C D E F G");
   
 Short syntax overview:<br>
-  Tnnn - Set tempo. Examples: T120, T240<br>
-  Lnn  - Set note length. Examples: L8, L16<br>
-  Mx   - Set timing. Mn=default, Ml=legato, Ms=staccato<br>
-  On   - Set octave. Examples: O6, O8<br>
-  A-C  - Play whole note. Example: C<br>
-  Nnn  - Play frequency 0-96. Example: N48<br>
-  #    - Play sharp note. Example: C#<br>
-  &plus;    - Alternative for #<br>
-  &minus;    - Play flat note. Example: D-&nbsp;<br>
-  R    - Rest. Example:  CDEC r CDEC<br>
-  P    - Alternative for R. Example:  CDEC p CDEC<br>
-  .    - Longer note. Example: CDEC.&nbsp;<br>
-  &gt; - shift actave up.  Example: CDE&gt;CDE.&nbsp;<br>
-  &lt; - shift actave down.  Example: CDE&lt;CDE.&nbsp;<br>
- Music notation is case-insensitive. Spaces can be used.
+&nbsp;  Tnnn - Set tempo. Examples: T120, T240<br>
+&nbsp;  Lnn  - Set note length. Examples: L8, L16<br>
+&nbsp;  Mx   - Set timing. Mn=default, Ml=legato, Ms=staccato<br>
+&nbsp;  On   - Set octave. Examples: O6, O8<br>
+&nbsp;  A-C  - Play whole note. Example: C<br>
+&nbsp;  Nnn  - Play frequency 0-96. Example: N48<br>
+&nbsp;  #    - Play sharp note. Example: C#<br>
+&nbsp;  &plus;    - Alternative for #<br>
+&nbsp;  &minus;    - Play flat note. Example: D-&nbsp;<br>
+&nbsp;  R    - Rest. Example:  CDEC r CDEC<br>
+&nbsp;  P    - Alternative for R. Example:  CDEC p CDEC<br>
+&nbsp;  .    - Longer note. Example: CDEC.&nbsp;<br>
+&nbsp;  &gt; - shift actave up.  Example: CDE&gt;CDE.&nbsp;<br>
+&nbsp;  &lt; - shift actave down.  Example: CDE&lt;CDE.&nbsp;<br>
+Music notation is case-insensitive. Spaces are not required but can be used.
