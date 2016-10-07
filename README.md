@@ -1,4 +1,5 @@
 # ESP-MusicEngine
+### Credits/references
 MusicEngine library ported from mBed to ESP8266 (tested in Arduino IDE v1.6.10)<br>
 MusicEngine class / Retro  Music Engine<br>
 Original author: Chris Taylor (taylorza)<br>
@@ -10,17 +11,24 @@ MusicEngine provides a means to play Music Macro Language sequences asynchronous
    For music see http://www.archeagemmllibrary.com/
 
 ================================
+### Usage
+The current version is not built as an Arduino library yet. Just add the files to your project.
 
-Note: the current version is not built as an Arduino library yet. Just add the files to your project.
+Initialisation outside of Setup():
+```
+  // define pin, include header and initialize class
+  #define BUZ_PIN 14
+  #include "MusicEngine.h"
+  MusicEngine music(BUZ_PIN);
+```
 
-Initialisation outside of Setup():<br>
-  #define BUZ_PIN 14<br>
-  #include "MusicEngine.h"<br>
-  MusicEngine music(BUZ_PIN);<br>
-  
-Then to play music where you want:<br>
-  music.play("T240 L16 O6 C D E F G");
-  
+Then to play music, call the play method where you want:
+```
+music.play("T240 L16 O6 C D E F G");
+```
+Note: the music will keep on playing using a Ticker interrupt. The callback for completion has not been ported yet
+
+### MML Syntax
 Short syntax overview:<br>
 &nbsp;  Tnnn - Set tempo. Examples: T120, T240<br>
 &nbsp;  Lnn  - Set note length. Examples: L8, L16<br>
