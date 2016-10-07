@@ -29,8 +29,8 @@ Short syntax overview:<br>
   A-C  - Play whole note. Example: C<br>
   Nnn  - Play frequency 0-96. Example: N48<br>
   #    - Play sharp note. Example: C#<br>
-  +    - Alternative for #<br>
-  -    - Play flat note. Example: D-<br>
+  &plus;    - Alternative for #<br>
+  &minus;    - Play flat note. Example: D-<br>
   R    - Rest. Example:  CDEC r CDEC<br>
   P    - Alternative for R. Example:  CDEC p CDEC<br>
   .    - Longer note. Example: CDEC.<br>
