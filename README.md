@@ -30,7 +30,7 @@ music.play("T240 L16 O6 C D E F G");
 ```
 Note: the music will keep on playing using a Ticker interrupt. The callback for completion has not been ported yet
 
-### MML Syntax
+### Supported MML Syntax
 Short syntax overview:<br>
 &nbsp;  Tnnn - Set tempo. Examples: T120, T240<br>
 &nbsp;  Lnn  - Set note length. Examples: L8, L16<br>
@@ -44,6 +44,7 @@ Short syntax overview:<br>
 &nbsp;  R    - Rest. Example:  CDEC r CDEC<br>
 &nbsp;  P    - Alternative for R. Example:  CDEC p CDEC<br>
 &nbsp;  .    - Longer note. Example: CDEC.&nbsp;<br>
-&nbsp;  &gt; - shift actave up.  Example: CDE&gt;CDE.&nbsp;<br>
-&nbsp;  &lt; - shift actave down.  Example: CDE&lt;CDE.&nbsp;<br>
-Music notation is case-insensitive. Spaces are not required but can be used.
+&nbsp;  &gt; - shift octave up.  Example: CDE&gt;CDE.&nbsp;<br>
+&nbsp;  &lt; - shift octave down.  Example: CDE&lt;CDE.&nbsp;<br>
+The supported MML-commands are a subset that may not completely cover all available music scores.
+If notes seem missing, check your score against the syntax above and replace unknown commends by equivalent supported alternatives. The music notation is case-insensitive. Spaces are not required but can be used for readability.
