@@ -22,7 +22,7 @@ public:
     /** Query the engine to determine if a MML sequence is currently being played. */    
     bool getIsPlaying() { return _isPlaying; }
     typedef void (*callback_t)(void);
-    void executeCommand();
+    void executeCommand();		// must be public because of ticker callback
 
 private:
 //    static void musicTickerCallback();
@@ -36,7 +36,6 @@ private:
 private:
     int      _pinPwm;
     bool        _isPlaying;
-    char _szBuf[255];
     char        *_mml;
     int         _mmlIndex;    
     int         _octave;

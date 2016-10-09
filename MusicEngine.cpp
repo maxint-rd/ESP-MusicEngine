@@ -40,7 +40,6 @@ MusicEngine* __thisMusicEngine=NULL;
 
 void musicTickerCallback()
 {
-  //Serial.println("musicTickerCallback");
   if(__thisMusicEngine)
     __thisMusicEngine->executeCommand();
 }
@@ -73,6 +72,17 @@ MusicEngine::MusicEngine(int pin) :
   //Serial.println("MusicEngine constructor");
 }
 
+/*
+MusicEngine::MusicEngine(PinName pin) :
+    _pwm(pin),
+    _isPlaying(false)
+{
+    _pwm.period_ms(1);
+    _pwm.write(0.0);
+}
+*/
+
+
 void MusicEngine::Setup(void)
 {
   //Serial.println("MusicEngine Setup");
@@ -80,29 +90,20 @@ void MusicEngine::Setup(void)
 
 void MusicEngine::play(char *mml)
 {
-    //Serial.printf("MusicEngine play %s\r\n", mml);
 //    __disable_irq();
     _isPlaying = false;
-    strncpy(this->_szBuf, mml, sizeof(this->_szBuf)-1);
-    _mml=this->_szBuf;
-    //Serial.println("MusicEngine play 1");
-    //_mml = mml;
+    _mml = mml;
     _mmlIndex = 0;
     _octave = 4;    
     _duration = QUARTER_NOTE_DURATION;
     _durationRatio = DEFAULT_TIMING;
     _tempo = 120;              
-    //Serial.println("MusicEngine play 2");
     //_pwm.period(0); 
-    //pinMode(_pinPwm, OUTPUT);
     analogWriteFreq(1000);  // Note: analogWriteFreq(0);  gives a spontaneous WDT reset 
     //_pwm = 0.5f;
-    //Serial.printf("MusicEngine play 3:%d\r\n",_pinPwm);
     analogWrite(_pinPwm, 512);  // default range is 1024
     _pause = 0;
     _isPlaying = true;    
-    //Serial.println("MusicEngine play 4");
-
 //    __enable_irq();
     MusicEngine::executeCommand();
 }
@@ -113,17 +114,6 @@ void MusicEngine::stop()
     _isPlaying = false;
 //    __enable_irq();
 }
-
-
-/*
-MusicEngine::MusicEngine(PinName pin) :
-    _pwm(pin),
-    _isPlaying(false)
-{
-    _pwm.period_ms(1);
-    _pwm.write(0.0);
-}
-*/
 
 void MusicEngine::executeCommand()
 {   
