@@ -38,13 +38,14 @@ Note: the music will keep on playing using a Ticker interrupt. The callback for 
 
 ### Supported MML Syntax
 Short syntax overview:<br>
-&nbsp;  Tnnn - Set tempo. Examples: T120, T240<br>
-&nbsp;  Lnn  - Set default note length. Examples: L8, L16<br>
+&nbsp;  Tnnn - Set tempo [32-255]. Examples: T120, T240<br>
+&nbsp;  Vnnn - Set volume [0-128]. Examples: V1, T120<br>
+&nbsp;  Lnn  - Set default note length [1-64]. Examples: L8, L16<br>
 &nbsp;  Mx   - Set timing. Mn=default, Ml=legato, Ms=staccato<br>
-&nbsp;  On   - Set octave. Examples: O6, O8<br>
+&nbsp;  On   - Set octave [0-7]. Examples: O6, O7<br>
 &nbsp;  A-G  - Play whole note. Example: C<br>
-&nbsp;  Ann-Gnn  - Play note of alternative length. Example: C4, A16<br>
-&nbsp;  Nnn  - Play frequency 0-96. Example: N48<br>
+&nbsp;  Ann-Gnn  - Play note of alternative length [1-64]. Example: C4, A16<br>
+&nbsp;  Nnn  - Play frequency [0-96]. Example: N48<br>
 &nbsp;  #    - Play sharp note. Example: C#<br>
 &nbsp;  &plus;    - Alternative for #<br>
 &nbsp;  &minus;    - Play flat note. Example: D-&nbsp; <br>
