@@ -1,13 +1,30 @@
 /*
+ * MusicEngine Serial
  * MusicEngine library example for ESP8266 in Arduino IDE
- * by MMOLE (@maxint-rd)
  * see https://github.com/maxint-rd/ESP-MusicEngine
+ *
+ * by MMOLE (@maxint-rd)
+ * This example code is in the public domain
+ *
+ * This example uses the serial console to receive music notes to be played
+ * using a speaker/buzzer on a digital pin (eg. between GPIO14 and GND).
+ * The music is played using an ticker-interrupt routine that changes the
+ * PWM frequency according the note being played. This means we can do other
+ * things while the music keeps playing. In this example we check the serial
+ * line for new input.
+ *
+ *
+ *
  */
 #include <MusicEngine.h>
 
-// define pin and initialize MusicEngine class
+// define pin and initialize MusicEngine object
 #define BUZ_PIN 14
 MusicEngine music(BUZ_PIN);
+
+// Reserve a buffer for playing the notes received via the serial console.
+// Note that this buffer should remain available while playing.
+char szBuf[256];  // serial buffer seems to be only 128 bytes
 
 void setup()
 { // put your setup code here, to run once:
@@ -24,21 +41,21 @@ void setup()
 void loop()
 { // put your main code here, to run repeatedly:
   while(!Serial.available())
-  { // wait for a serial string to be entered, give a beep and a dot to indicate we're waiting
-    for(int n=0; n<100 && !Serial.available(); n++)
+  { // Wait for a serial string to be entered.
+  	// Sound a beep and and print a dot every 5 sec to indicate we're waiting.
+    for(int n=0; n<50 && !Serial.available(); n++)
       delay(100);    // just delay while waiting for input
     Serial.print(".");
-    music.play("T250 L64 O7 B");      // give a short tick-like beep
+    if(!music.getIsPlaying()) music.play("T250 L64 O7 B");      // give a short tick-like beep when waiting for input
   }
 
   if(Serial.available() > 0)
   { // assume the string is valid MML and try to play it
-    char szBuf[256];  // serial buffer seems to be only 128 bytes
     int nRead=Serial.readBytesUntil('\n', szBuf, sizeof(szBuf)-1);
     szBuf[nRead]='\0';  // terminate string
     Serial.println(F("\nPlaying tune:"));
     Serial.println(szBuf);
     Serial.print(F("Please type new notes to play something else."));
-    music.play(szBuf);
+    music.play(szBuf);  // the buffer is global to reserve it while playing.
   }
 }
