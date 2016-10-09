@@ -193,12 +193,12 @@ void MusicEngine::executeCommand()
             
             if (freqIndex != -1)
             {
+            	  bool fCminus=false;		// MMOLE: ugly fix for nitwits that use C- in their music
                 switch(getChar())
                 {
                     case '+':
                     case '#': ++freqIndex; break;
-                    
-                    case '-': --freqIndex; break;
+                    case '-': --freqIndex; if(freqIndex==0) fCminus=true; break;
                     case '.': 
                         durationRatio = 3.0f / 2.0f; 
                         while(peekChar() == '.')
@@ -217,11 +217,13 @@ void MusicEngine::executeCommand()
                     duration = WHOLE_NOTE_DURATION / getNumber(1, 64);
                 }
                 
-                if (freqIndex != NOTE_REST)
+                if (freqIndex != NOTE_REST || (fCminus && _octave>0))
                 {
                     //_pwm.period(PERIOD_TABLE[freqIndex + (_octave * 12)]);    
                     //_pwm = 0.5;
                     float ftFreq=1.0/PERIOD_TABLE[freqIndex + (_octave * 12)];
+                    if(fCminus) ftFreq=1.0/PERIOD_TABLE[NOTE_B + ((_octave-1) * 12)];   // MMOLE: ugly fix: play C- as B in lower octave
+
                     int nFreq=(int)ftFreq;
                     //Serial.print("MusicEngine executeCommand freq:");
                     //Serial.println(ftFreq);
