@@ -23,8 +23,8 @@ The current version can be downloaded as an Arduino library using the Sketch|Lib
 Initialisation outside of Setup():
 ```
   // define pin, include header and initialize class
+  #include <MusicEngine.h>
   #define BUZ_PIN 14
-  #include "MusicEngine.h"
   MusicEngine music(BUZ_PIN);
 ```
 
