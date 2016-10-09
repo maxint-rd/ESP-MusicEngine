@@ -94,14 +94,16 @@ void MusicEngine::play(char *mml)
     _isPlaying = false;
     _mml = mml;
     _mmlIndex = 0;
-    _octave = 4;    
+    _octave = 4;
     _duration = QUARTER_NOTE_DURATION;
     _durationRatio = DEFAULT_TIMING;
-    _tempo = 120;              
+    _tempo = 120;
+    _volume = 128;
     //_pwm.period(0); 
     analogWriteFreq(1000);  // Note: analogWriteFreq(0);  gives a spontaneous WDT reset 
     //_pwm = 0.5f;
-    analogWrite(_pinPwm, 512);  // default range is 1024
+    //analogWrite(_pinPwm, 512);  // default range is 1024
+    analogWrite(_pinPwm, 0);  // default range is 1024, start quiet using pulse-width zero
     _pause = 0;
     _isPlaying = true;    
 //    __enable_irq();
@@ -156,6 +158,7 @@ void MusicEngine::executeCommand()
                 case 'l': if (isdigit(peekChar())) _duration = (float)WHOLE_NOTE_DURATION / getNumber(1, 64); break;
                 case 'o': if (isdigit(peekChar())) _octave = getNumber(0, 7); break;
                 case 't': if (isdigit(peekChar())) _tempo = getNumber(32, 255); break;
+                case 'v': if (isdigit(peekChar())) _volume = getNumber(0, 128); break;
                 case 'm':
                     switch(getChar())
                     {
@@ -225,11 +228,14 @@ void MusicEngine::executeCommand()
                     
                     //Serial.printf("MusicEngine executeCommand 5: n%d|o%d=%d-%d\n", freqIndex, _octave, nFreq, 1.0/PERIOD_TABLE[freqIndex + (_octave * 12)]);
 
+                    // Set the PWM frequency to that specified by the note being played
                     analogWriteFreq(nFreq);
-                    //Serial.println("MusicEngine executeCommand 6");
-                    analogWrite(_pinPwm, 512);  // default range is 1024
+                    // Note that PWM has lots of harmonics, so volume control using the PWM duty-cycle is not very good, but perhaps better than nothing.
+                    // The default pwm-range is 1024. A 50% duty-cycle (=512) gives highest volume
+                    // The volume command Vnnn has a range 0-128, so we multiply by 4 to get the PWM value.
+                    analogWrite(_pinPwm, _volume*4);
 
-                //Serial.printf("MusicEngine busy(%d):", nFreq);
+                		//Serial.printf("MusicEngine busy(%d):", nFreq);
                 }
                 //Serial.println("MusicEngine executeCommand 7");
                 duration *= (QUARTER_NOTES_PER_MINUTE / _tempo);

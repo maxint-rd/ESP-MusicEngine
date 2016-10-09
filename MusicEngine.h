@@ -43,6 +43,7 @@ private:
     float       _durationRatio;
     float       _pause;
     int         _tempo;
+    int         _volume;
 //    Timeout     _scheduler;
     Ticker     _scheduler;
 
