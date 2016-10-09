@@ -12,9 +12,11 @@ The music is played using an ticker-interrupt routine that changes the PWM frequ
 
 Learn more about Music Macro Language (MML) on wikipedia:<br>
    http://en.wikipedia.org/wiki/Music_Macro_Language<br>
-   For music see http://www.archeagemmllibrary.com/<br>
+   For downloadable MML music see http://www.archeagemmllibrary.com/<br>
 Extensive MML reference guide (not all commands supported):<br>
-   http://woolyss.com/chipmusic/chipmusic-mml/ppmck_guide.php
+   http://woolyss.com/chipmusic/chipmusic-mml/ppmck_guide.php<br>
+Info about using PWM and other methods to generate sound:<br>
+   https://developer.mbed.org/users/4180_1/notebook/using-a-speaker-for-audio-output/
 
 ================================
 ### Installation/Usage
