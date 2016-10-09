@@ -10,7 +10,9 @@ Ported from mBed to ESP8266/Arduino by MMOLE (maxint-rd)
 MusicEngine provides a means to play Music Macro Language sequences asynchronously.<br>
 Learn more about Music Macro Language (MML) on wikipedia:<br>
    http://en.wikipedia.org/wiki/Music_Macro_Language<br>
-   For music see http://www.archeagemmllibrary.com/
+   For music see http://www.archeagemmllibrary.com/<br>
+Extensive MML reference guide (not all commands supported):<br>
+   http://woolyss.com/chipmusic/chipmusic-mml/ppmck_guide.php
 
 ================================
 ### Installation/Usage
@@ -33,10 +35,11 @@ Note: the music will keep on playing using a Ticker interrupt. The callback for 
 ### Supported MML Syntax
 Short syntax overview:<br>
 &nbsp;  Tnnn - Set tempo. Examples: T120, T240<br>
-&nbsp;  Lnn  - Set note length. Examples: L8, L16<br>
+&nbsp;  Lnn  - Set default note length. Examples: L8, L16<br>
 &nbsp;  Mx   - Set timing. Mn=default, Ml=legato, Ms=staccato<br>
 &nbsp;  On   - Set octave. Examples: O6, O8<br>
-&nbsp;  A-C  - Play whole note. Example: C<br>
+&nbsp;  A-G  - Play whole note. Example: C<br>
+&nbsp;  Ann-Gnn  - Play note of alternative length. Example: C4, A16<br>
 &nbsp;  Nnn  - Play frequency 0-96. Example: N48<br>
 &nbsp;  #    - Play sharp note. Example: C#<br>
 &nbsp;  &plus;    - Alternative for #<br>
