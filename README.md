@@ -51,7 +51,7 @@ Command | Description
 &nbsp;  Nnn  | Play frequency [0-96]. Example: N48<br>
 &nbsp;  #    | Play sharp note. Example: C#<br>
 &nbsp;  &plus;    | Alternative for #<br>
-&nbsp;  &minus;   | Play flat note. Example: D-&nbsp; <br>
+&nbsp;  &minus;   | Play flat note. Example: D-<br>
 &nbsp;  R    | Rest. Example:  CDEC r CDEC<br>
 &nbsp;  P    | Alternative for R. Example:  CDEC p CDEC<br>
 &nbsp;  .    | Longer note. Example: CDEC.&nbsp;<br>
