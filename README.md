@@ -7,8 +7,8 @@ Original author: Chris Taylor (taylorza). Open source license: Apache 2.0<br>
 see https://developer.mbed.org/users/taylorza/code/MusicEngine/<br>
 Ported from mBed to ESP8266/Arduino by MMOLE (maxint-rd), inherited Apache license.
 
-MusicEngine provides a means to play Music Macro Language sequences asynchronously.<br>
-The music is played using an ticker-interrupt routine that changes the PWM frequency according the note being played. This means we can do other things while the music keeps playing.
+MusicEngine provides a means to play Music Macro Language sequences asynchronously. Where then tone() API-funtion allows for playing one single note, the MusicEngine.play() method can play an entire music score.<br>
+The music is played using a ticker-interrupt routine that changes the PWM frequency according the specific notes being played. This means we can do other things while the music keeps playing.
 
 Learn more about Music Macro Language (MML) on wikipedia:<br>
    http://en.wikipedia.org/wiki/Music_Macro_Language<br>
