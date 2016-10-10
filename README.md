@@ -3,9 +3,9 @@
 ### Credits/references
 MusicEngine library ported from mBed to ESP8266 (tested in Arduino IDE v1.6.10)<br>
 MusicEngine class / Retro  Music Engine<br>
-Original author: Chris Taylor (taylorza)<br>
+Original author: Chris Taylor (taylorza). Open source license: Apache 2.0<br>
 see https://developer.mbed.org/users/taylorza/code/MusicEngine/<br>
-Ported from mBed to ESP8266/Arduino by MMOLE (maxint-rd)
+Ported from mBed to ESP8266/Arduino by MMOLE (maxint-rd), inherited Apache license.
 
 MusicEngine provides a means to play Music Macro Language sequences asynchronously.<br>
 The music is played using an ticker-interrupt routine that changes the PWM frequency according the note being played. This means we can do other things while the music keeps playing.
