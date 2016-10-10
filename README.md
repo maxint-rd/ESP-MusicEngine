@@ -37,7 +37,13 @@ music.play("T240 L16 O6 C D E F G");
 Note: the music will keep on playing using a Ticker interrupt. The callback for completion has not been ported yet
 
 ### Supported MML Syntax
-Short syntax overview:
+
+First Header | Second Header
+------------ | -------------
+Content from cell 1 | Content from cell 2
+Content in the first column | Content in the second column
+
+Short syntax overview:<br>
 Command | Description
 ------- | -----------
 &nbsp;  Tnnn | - Set tempo [32-255]. Examples: T120, T240<br>
