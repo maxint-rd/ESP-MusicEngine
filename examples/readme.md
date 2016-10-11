@@ -3,7 +3,7 @@
 These examples are made to demonstrate the MusicEngine library for ESP8266 within the Arduino IDE.<br>
 The examples were tested in the Arduino 1.6.10 IDE using an ESP-07 on a white breakout board with the buzzer connected to GPIO14 and the onboard LED on GPIO2.
 
-**WARNING**: Depending the specifications connecting a buzzer directly to an output-pin may draw too much current and can damage your ESP module. Although my ESPs don't seem to mind, yours may not. If you don't mind taking risks, go ahead; otherwise use a current limiting resistor or drive the buzzer via a transistor.
+**WARNING**: Depending the specifications connecting a buzzer directly to an output-pin may draw too much current and can damage your ESP module. Although my ESPs don't seem to mind, yours may fail. If you don't mind taking risks, go ahead; otherwise use a current limiting resistor or drive the buzzer via a transistor.
 
 For more information see the comments in the example code or read the library documentation.
 
