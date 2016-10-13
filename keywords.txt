@@ -1,0 +1,3 @@
+MusicEngine	KEYWORD1
+play	KEYWORD2
+getIsPlaying	KEYWORD2
