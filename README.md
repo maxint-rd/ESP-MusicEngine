@@ -57,5 +57,6 @@ Command | Description
 &nbsp;  .    | Longer note. Example: CDEC.&nbsp;<br>
 &nbsp;  &gt; | shift octave up.  Example: CDE&gt;CDE.&nbsp;<br>
 &nbsp;  &lt; | shift octave down.  Example: CDE&lt;CDE.&nbsp;<br>
+
 The supported MML-commands are a subset that may not completely cover all available music scores.
 If notes seem missing, check your score against the syntax above and replace unknown commands by equivalent supported alternatives. The music notation is case-insensitive. Spaces are not required but can be used for readability.
