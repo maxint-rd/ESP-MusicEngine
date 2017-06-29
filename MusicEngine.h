@@ -2,60 +2,61 @@
 #define __MUSICENGINE_H__
 #include <Ticker.h>
 
-class MusicEngine
-{
+class MusicEngine {
 public:
     /** Creates an instance of the MusicEngine
       * @param pin pin used to generate the note frequencies
-    */ 
+    */
     MusicEngine(int pin);
     void Setup(void);
 
-    /** Starts playing a new MML sequence. If one is already playing it is stopped and the new sequences started. 
+    /** Starts playing a new MML sequence. If one is already playing it is stopped and the new
+     * sequences started.
       * @param mml string of MML commands to be played
      */
-    void play(char *mml);
-    
-    /** Stop a currently playing sequence */     
+    void play(char* mml);
+
+    /** Stop a currently playing sequence */
     void stop();
 
-    /** Query the engine to determine if a MML sequence is currently being played. */    
-    bool getIsPlaying() { return _isPlaying; }
+    /** Query the engine to determine if a MML sequence is currently being played. */
+    bool getIsPlaying()
+    {
+        return _isPlaying;
+    }
     typedef void (*callback_t)(void);
-    void executeCommand();		// must be public because of ticker callback
+    void executeCommand(); // must be public because of ticker callback
 
 private:
-//    static void musicTickerCallback();
+    //    static void musicTickerCallback();
     int getNumber(int min, int max);
     void skipWhiteSpace();
     char getChar();
     char peekChar();
     void rewind();
 
-
 private:
-    int      _pinPwm;
-    bool        _isPlaying;
-    char        *_mml;
-    int         _mmlIndex;    
-    int         _octave;
-    float       _duration;
-    float       _durationRatio;
-    float       _pause;
-    int         _tempo;
-    int         _volume;
-//    Timeout     _scheduler;
-    Ticker     _scheduler;
+    int _pinPwm;
+    bool _isPlaying;
+    char* _mml;
+    int _mmlIndex;
+    int _octave;
+    float _duration;
+    float _durationRatio;
+    float _pause;
+    int _tempo;
+    int _volume;
+    //    Timeout     _scheduler;
+    Ticker _scheduler;
 
     static const float WHOLE_NOTE_DURATION;
     static const float QUARTER_NOTE_DURATION;
     static const float QUARTER_NOTES_PER_MINUTE;
 
-    
     static const float DEFAULT_TIMING;
     static const float LEGATO_TIMING;
     static const float STACCATO_TIMING;
-    
+
     static const int NOTE_REST;
     static const int NOTE_C;
     static const int NOTE_CS;
@@ -77,7 +78,7 @@ private:
 
     void setToneCallback(void (*function)(void))
     {
-        _toneCallback=function;
+        _toneCallback = function;
     }
 
 #if 0    
@@ -108,8 +109,6 @@ private:
     PwmOut      _pwm;
     
     FunctionPointer _completionCallback;
-    
-    
 
 #endif
 };
