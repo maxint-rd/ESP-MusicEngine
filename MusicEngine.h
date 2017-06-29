@@ -13,13 +13,13 @@ public:
      * sequences started.
       * @param mml string of MML commands to be played
      */
-    void play(char* mml);
+    void play(const char* mml);
 
     /** Stop a currently playing sequence */
     void stop();
 
     /** Query the engine to determine if a MML sequence is currently being played. */
-    bool getIsPlaying()
+    bool getIsPlaying() const
     {
         return _isPlaying;
     }
@@ -37,7 +37,7 @@ private:
 private:
     int _pinPwm;
     bool _isPlaying;
-    char* _mml;
+    const char* _mml;
     int _mmlIndex;
     int _octave;
     float _duration;

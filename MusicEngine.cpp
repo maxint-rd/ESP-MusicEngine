@@ -55,7 +55,7 @@ MusicEngine::MusicEngine(int pin)
     analogWrite(_pinPwm, 0);
 }
 
-void MusicEngine::play(char* mml)
+void MusicEngine::play(const char* mml)
 {
     //    __disable_irq();
     _isPlaying = false;
