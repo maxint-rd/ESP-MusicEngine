@@ -8,7 +8,6 @@ public:
       * @param pin pin used to generate the note frequencies
     */
     MusicEngine(int pin);
-    void Setup(void);
 
     /** Starts playing a new MML sequence. If one is already playing it is stopped and the new
      * sequences started.

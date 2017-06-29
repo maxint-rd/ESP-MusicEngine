@@ -70,22 +70,6 @@ MusicEngine::MusicEngine(int pin)
     analogWriteFreq(1000);
     //_pwm.write(0.0);
     analogWrite(_pinPwm, 0);
-    // Serial.println("MusicEngine constructor");
-}
-
-/*
-MusicEngine::MusicEngine(PinName pin) :
-    _pwm(pin),
-    _isPlaying(false)
-{
-    _pwm.period_ms(1);
-    _pwm.write(0.0);
-}
-*/
-
-void MusicEngine::Setup(void)
-{
-    // Serial.println("MusicEngine Setup");
 }
 
 void MusicEngine::play(char* mml)
@@ -119,22 +103,17 @@ void MusicEngine::stop()
 
 void MusicEngine::executeCommand()
 {
-    // Serial.println("MusicEngine executeCommand 0");
     //    _scheduler.detach();
     if (_pause < 0)
         _pause = 0;
     if (_pause != 0) {
-        // Serial.print("MusicEngine executeCommand Pause:");
-        // Serial.print(_pause);
         //_pwm.period(0);
         //_pwm = 0.0f;
-        // Serial.println("MusicEngine executeCommand 1");
         analogWriteFreq(1000); // Note: analogWriteFreq(0);  gives a spontaneous WDT reset
         analogWrite(_pinPwm, 0); // default range is 1024
         //        _scheduler.attach(this, &MusicEngine::executeCommand, _pause);
         _scheduler.once(_pause, musicTickerCallback);
         _pause = 0;
-        // Serial.println("MusicEngine executeCommand 2");
     } else {
         int freqIndex = -1;
         do {
@@ -218,7 +197,6 @@ void MusicEngine::executeCommand()
             }
 
             if (!_isPlaying) {
-                // Serial.println("MusicEngine done playing");
                 //_pwm.period_ms(1);
                 //_pwm.write(0.0);
                 analogWriteFreq(1000);
@@ -269,11 +247,6 @@ void MusicEngine::executeCommand()
                     // octave
 
                     int nFreq = (int)ftFreq;
-                    // Serial.print("MusicEngine executeCommand freq:");
-                    // Serial.println(ftFreq);
-
-                    // Serial.printf("MusicEngine executeCommand 5: n%d|o%d=%d-%d\n", freqIndex,
-                    // _octave, nFreq, 1.0/PERIOD_TABLE[freqIndex + (_octave * 12)]);
 
                     // Set the PWM frequency to that specified by the note being played
                     analogWriteFreq(nFreq);
@@ -283,17 +256,13 @@ void MusicEngine::executeCommand()
                     // The volume command Vnnn has a range 0-128, so we multiply by 4 to get the PWM
                     // value.
                     analogWrite(_pinPwm, _volume * 4);
-
-                    // Serial.printf("MusicEngine busy(%d):", nFreq);
                 }
-                // Serial.println("MusicEngine executeCommand 7");
                 duration *= (QUARTER_NOTES_PER_MINUTE / _tempo);
                 //                _scheduler.attach(this, &MusicEngine::executeCommand, duration *
                 //                durationRatio);
                 _pause = duration * durationRatio;
                 _scheduler.once(_pause, musicTickerCallback);
-                _pause = duration
-                    * (1 - durationRatio); // TODO: why 1-ratio? Can result in negative pause!
+                _pause = duration * (1 - durationRatio);
             }
         } while (freqIndex == -1);
     }
