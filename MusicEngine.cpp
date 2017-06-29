@@ -38,6 +38,7 @@ const int MusicEngine::NOTE_B = 12;
 MusicEngine::MusicEngine(int pin)
     : _pinPwm(pin)
     , _isPlaying(false)
+    , _completionCallback(NULL)
 {
     pinMode(_pinPwm, OUTPUT);
     //_pwm.period_ms(1);
@@ -175,7 +176,8 @@ void MusicEngine::executeCommand()
                 //_pwm.write(0.0);
                 analogWriteFreq(1000);
                 analogWrite(_pinPwm, 0); // default range is 1024
-                // TODO                _completionCallback.call();
+                if (_completionCallback)
+                    _completionCallback();
                 return;
             }
 

@@ -34,7 +34,7 @@ Then to play music, call the play method where you want:
 ```
 music.play("T240 L16 O6 C D E F G");
 ```
-Note: the music will keep on playing using a Ticker interrupt. The callback for completion has not been ported yet
+Note: the music will keep on playing using a Ticker interrupt.
 
 ### Supported MML Syntax
 Short syntax overview:<br>

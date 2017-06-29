@@ -23,7 +23,12 @@ public:
     {
         return _isPlaying;
     }
-    typedef void (*callback_t)(void);
+
+    /** Setup a callback function that will be executed when the music sequence ends. */
+    void setCompletionCallback(void (*function)(void))
+    {
+        _completionCallback = function;
+    }
 
 private:
     void executeCommand();
@@ -44,9 +49,9 @@ private:
     float _pause;
     int _tempo;
     int _volume;
-    //    Timeout     _scheduler;
     Ticker _scheduler;
 
+    void (*_completionCallback)(void);
     static void musicTickerCallback(MusicEngine*);
 
     static const float WHOLE_NOTE_DURATION;
@@ -72,44 +77,5 @@ private:
     static const int NOTE_B;
 
     static const float PERIOD_TABLE[];
-
-    callback_t _toneCallback;
-    callback_t _completionCallback;
-
-    void setToneCallback(void (*function)(void))
-    {
-        _toneCallback = function;
-    }
-
-#if 0    
-
-    /** Creates an instance of the MusicEngine
-      * @param pin pin used to generate the note frequencies
-    */ 
-    MusicEngine(PinName pin);
-    
-    /** Setup a callback function that will be executed when the music sequence ends. */
-    void setCompletionCallback(void (*function)(void))
-    {
-        _completionCallback.attach(function);
-    }
-    
-    /** Setup a callback function that will be executed when the music sequence ends.
-     * @note This override is used if the callback is a class member
-     */
-    template<typename T>
-    void setCompletionCallback(T *object, void (T::*member)(void))
-    {
-        _completionCallback.attach(object, member);       
-    }
-
-//private:
-    
-private:
-    PwmOut      _pwm;
-    
-    FunctionPointer _completionCallback;
-
-#endif
 };
 #endif //__MUSICENGINE_H__
