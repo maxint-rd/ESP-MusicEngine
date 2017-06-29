@@ -24,10 +24,9 @@ public:
         return _isPlaying;
     }
     typedef void (*callback_t)(void);
-    void executeCommand(); // must be public because of ticker callback
 
 private:
-    //    static void musicTickerCallback();
+    void executeCommand();
     int getNumber(int min, int max);
     void skipWhiteSpace();
     char getChar();
@@ -47,6 +46,8 @@ private:
     int _volume;
     //    Timeout     _scheduler;
     Ticker _scheduler;
+
+    static void musicTickerCallback(MusicEngine*);
 
     static const float WHOLE_NOTE_DURATION;
     static const float QUARTER_NOTE_DURATION;

@@ -35,19 +35,10 @@ const int MusicEngine::NOTE_A = 10;
 const int MusicEngine::NOTE_AS = 11;
 const int MusicEngine::NOTE_B = 12;
 
-MusicEngine* __thisMusicEngine = NULL;
-
-void musicTickerCallback()
-{
-    if (__thisMusicEngine)
-        __thisMusicEngine->executeCommand();
-}
-
 MusicEngine::MusicEngine(int pin)
     : _pinPwm(pin)
     , _isPlaying(false)
 {
-    __thisMusicEngine = this;
     pinMode(_pinPwm, OUTPUT);
     //_pwm.period_ms(1);
     analogWriteFreq(1000);
@@ -95,7 +86,7 @@ void MusicEngine::executeCommand()
         analogWriteFreq(1000); // Note: analogWriteFreq(0);  gives a spontaneous WDT reset
         analogWrite(_pinPwm, 0); // default range is 1024
         //        _scheduler.attach(this, &MusicEngine::executeCommand, _pause);
-        _scheduler.once(_pause, musicTickerCallback);
+        _scheduler.once(_pause, &MusicEngine::musicTickerCallback, this);
         _pause = 0;
     } else {
         int freqIndex = -1;
@@ -241,10 +232,7 @@ void MusicEngine::executeCommand()
                     analogWrite(_pinPwm, _volume * 4);
                 }
                 duration *= (QUARTER_NOTES_PER_MINUTE / _tempo);
-                //                _scheduler.attach(this, &MusicEngine::executeCommand, duration *
-                //                durationRatio);
-                _pause = duration * durationRatio;
-                _scheduler.once(_pause, musicTickerCallback);
+                _scheduler.once(duration * durationRatio, &MusicEngine::musicTickerCallback, this);
                 _pause = duration * (1 - durationRatio);
             }
         } while (freqIndex == -1);
@@ -286,6 +274,11 @@ char MusicEngine::peekChar()
 void MusicEngine::rewind()
 {
     --_mmlIndex;
+}
+
+void MusicEngine::musicTickerCallback(MusicEngine* __thisMusicEngine)
+{
+    __thisMusicEngine->executeCommand();
 }
 
 // clang-format off
