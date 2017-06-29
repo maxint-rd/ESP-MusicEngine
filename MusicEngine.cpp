@@ -10,7 +10,7 @@
 */
 
 #include "MusicEngine.h"
-#include <ESP8266WiFi.h>
+#include <Arduino.h>
 #include <cctype>
 
 const float MusicEngine::WHOLE_NOTE_DURATION = 1.0f;
