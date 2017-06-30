@@ -2,6 +2,7 @@
 
 This example demonstrates playing tunes entered via the serial interface.
 Default baudrate is set to 115200.
+
 When the tune is done playing a callback function is called to notify completion.
 
 
