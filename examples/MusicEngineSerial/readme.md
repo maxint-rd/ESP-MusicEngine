@@ -2,6 +2,7 @@
 
 This example demonstrates playing tunes entered via the serial interface.
 Default baudrate is set to 115200.
+When the tune is done playing a callback function is called to notify completion.
 
 
 ### Output
@@ -18,9 +19,12 @@ Example tune: T180 L8 CDEC. r CDEC. r EFG. r EFG. r GAGFEC. r GAGFEC. r L4 C<A>C
 Playing tune:
 T240 L16 CDEFGAB>CDEFGAB>CDEFGAB
 
+Done playing.
 Please type new notes to play something else...
 Playing tune:
 T240 L16 CDEFGAB>CDEFGAB>CDEFGAB>CDEFGAB>CDEFGAB
 
+
+Done playing.
 Please type new notes to play something else...
 ```
