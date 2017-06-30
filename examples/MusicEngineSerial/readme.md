@@ -24,7 +24,6 @@ Please type new notes to play something else...
 Playing tune:
 T240 L16 CDEFGAB>CDEFGAB>CDEFGAB>CDEFGAB>CDEFGAB
 
-
 Done playing.
 Please type new notes to play something else...
 ```
