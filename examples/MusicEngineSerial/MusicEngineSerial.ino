@@ -26,6 +26,11 @@ MusicEngine music(BUZ_PIN);
 // Note that this buffer should remain available while playing.
 char szBuf[256]; // serial buffer seems to be only 128 bytes
 
+void fnCompleted(void)
+{   // callback function to notify completion
+    Serial.print(F("\nDone playing.\nPlease type new notes to play something else."));
+}
+
 void setup()
 { // put your setup code here, to run once:
     Serial.begin(115200);
@@ -47,7 +52,10 @@ void loop()
             delay(100); // just delay while waiting for input
         Serial.print(".");
         if (!music.getIsPlaying())
+        {
+            music.setCompletionCallback(NULL);    // prevent notification after sounding a little beep
             music.play("T250 L64 O7 B"); // give a short tick-like beep when waiting for input
+        }
     }
 
     if (Serial.available() > 0) { // assume the string is valid MML and try to play it
@@ -55,7 +63,7 @@ void loop()
         szBuf[nRead] = '\0'; // terminate string
         Serial.println(F("\nPlaying tune:"));
         Serial.println(szBuf);
-        Serial.print(F("Please type new notes to play something else."));
+        music.setCompletionCallback(fnCompleted);   // setup the callback to notify completion
         music.play(szBuf); // the buffer is global to reserve it while playing.
     }
 }
