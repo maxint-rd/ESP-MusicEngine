@@ -1,14 +1,14 @@
 # ESP-MusicEngine
 
 ### Credits/references
-MusicEngine library ported from mBed to ESP8266 (tested in Arduino IDE v1.6.10)<br>
+MusicEngine library ported from mBed to Arduino (tested IDE v1.6.10 and v1.8.2). Supports ESP8266 and ATmega (tested 328 and 168)<br>
 MusicEngine class / Retro  Music Engine<br>
 Original author: Chris Taylor (taylorza). Open source license: Apache 2.0<br>
 see https://developer.mbed.org/users/taylorza/code/MusicEngine/<br>
-Ported from mBed to ESP8266/Arduino by MMOLE (maxint-rd), inherited Apache license.
+Ported from mBed to Arduino by MMOLE (maxint-rd), inherited Apache license.
 
 MusicEngine provides a means to play Music Macro Language sequences asynchronously. Where the tone() API-function allows for playing one single note, the MusicEngine.play() method can play an entire music score.<br>
-The music is played using a ticker-interrupt routine that changes the PWM frequency according the specific notes being played. This means we can do other things while the music keeps playing.
+The music is played using an interrupt routine that changes the PWM frequency according the specific notes being played. This means we can do other things while the music keeps playing.
 
 Learn more about Music Macro Language (MML) on wikipedia:<br>
    http://en.wikipedia.org/wiki/Music_Macro_Language<br>
@@ -20,7 +20,7 @@ Info about using PWM and other methods to generate sound:<br>
 
 ================================
 ### Installation/Usage
-The current version can be downloaded as an Arduino library using the Sketch|Library menu. Just add the zipfile library and the enclosed examples should appear in the menu automatically.
+The current version can be downloaded as an Arduino library using the Sketch|Library menu. Just add the zipfile library and the enclosed examples should appear in the menu automatically. On the ESP8266 the Ticker library is used. For ATmega a Timer2 interrupt is used.
 
 Initialisation outside of Setup():
 ```
