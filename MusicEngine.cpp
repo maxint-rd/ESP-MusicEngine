@@ -10,8 +10,10 @@
 */
 
 #include "MusicEngine.h"
-#include <Arduino.h>
-#include <cctype>
+//#include <Arduino.h>
+#if defined (ARDUINO_ARCH_ESP8266)
+    #include <cctype>
+#endif
 
 const float MusicEngine::WHOLE_NOTE_DURATION = 1.0f;
 const float MusicEngine::QUARTER_NOTE_DURATION = MusicEngine::WHOLE_NOTE_DURATION / 4.0f;
@@ -41,14 +43,60 @@ MusicEngine::MusicEngine(int pin)
     , _completionCallback(NULL)
 {
     pinMode(_pinPwm, OUTPUT);
-    //_pwm.period_ms(1);
-    analogWriteFreq(1000);
-    //_pwm.write(0.0);
-    analogWrite(_pinPwm, 0);
+    this->noTone();
 }
+
+
+void MusicEngine::tone(unsigned int frequency, unsigned long length)	// length=0
+{
+/*
+	Serial.print(F("MusicEngine tone:"));
+	Serial.print(frequency);
+	Serial.print(F(", len "));
+	Serial.print(length);
+	Serial.print(F(", pin "));
+  Serial.println(_pinPwm);
+*/
+#if defined (ARDUINO_ARCH_ESP8266)
+	// Set the PWM frequency to that specified by the note being played
+	analogWriteFreq(frequency);
+	// Note that PWM has lots of harmonics, so volume control using the PWM
+	// duty-cycle is not very good, but perhaps better than nothing.
+	// The default pwm-range is 1024. A 50% duty-cycle (=512) gives highest volume
+	// The volume command Vnnn has a range 0-128, so we multiply by 4 to get the PWM
+	// value.
+	analogWrite(_pinPwm, _volume * 4);
+#else
+    _toneTim2(_pinPwm, frequency, length);
+#endif
+}
+
+void MusicEngine::noTone()
+{
+#if defined (ARDUINO_ARCH_ESP8266)
+    analogWriteFreq(1000); // Note: analogWriteFreq(0);  gives a spontaneous WDT reset
+    analogWrite(_pinPwm, 0);  // default range is 1024, start quiet using pulse-width zero
+#else
+    _noToneTim2();
+#endif
+}
+
+void MusicEngine::waitTone(unsigned long length)		// length=0
+{		// schedule wait time. length is specified in msec
+#if defined (ARDUINO_ARCH_ESP8266)
+    _scheduler.once(length/1000.0, &MusicEngine::musicTickerCallback, this);
+#else
+    _waitToneTim2(length);
+#endif
+}
+
+
+
 
 void MusicEngine::play(const char* mml)
 {
+		//Serial.print(F("MusicEngine play:"));
+		//Serial.println(mml);
     //    __disable_irq();
     _isPlaying = false;
     _mml = mml;
@@ -59,10 +107,8 @@ void MusicEngine::play(const char* mml)
     _tempo = 120;
     _volume = 128;
     //_pwm.period(0);
-    analogWriteFreq(1000); // Note: analogWriteFreq(0);  gives a spontaneous WDT reset
     //_pwm = 0.5f;
-    // analogWrite(_pinPwm, 512);  // default range is 1024
-    analogWrite(_pinPwm, 0); // default range is 1024, start quiet using pulse-width zero
+    this->noTone();
     _pause = 0;
     _isPlaying = true;
     //    __enable_irq();
@@ -84,10 +130,9 @@ void MusicEngine::executeCommand()
     if (_pause != 0) {
         //_pwm.period(0);
         //_pwm = 0.0f;
-        analogWriteFreq(1000); // Note: analogWriteFreq(0);  gives a spontaneous WDT reset
-        analogWrite(_pinPwm, 0); // default range is 1024
         //        _scheduler.attach(this, &MusicEngine::executeCommand, _pause);
-        _scheduler.once(_pause, &MusicEngine::musicTickerCallback, this);
+				this->noTone();
+				this->waitTone(_pause*1000);
         _pause = 0;
     } else {
         int freqIndex = -1;
@@ -170,12 +215,10 @@ void MusicEngine::executeCommand()
                 _isPlaying = false;
                 break;
             }
-
             if (!_isPlaying) {
                 //_pwm.period_ms(1);
                 //_pwm.write(0.0);
-                analogWriteFreq(1000);
-                analogWrite(_pinPwm, 0); // default range is 1024
+								this->noTone();
                 if (_completionCallback)
                     _completionCallback();
                 return;
@@ -221,20 +264,11 @@ void MusicEngine::executeCommand()
                     // fix: play C-
                     // as B in lower
                     // octave
-
-                    int nFreq = (int)ftFreq;
-
-                    // Set the PWM frequency to that specified by the note being played
-                    analogWriteFreq(nFreq);
-                    // Note that PWM has lots of harmonics, so volume control using the PWM
-                    // duty-cycle is not very good, but perhaps better than nothing.
-                    // The default pwm-range is 1024. A 50% duty-cycle (=512) gives highest volume
-                    // The volume command Vnnn has a range 0-128, so we multiply by 4 to get the PWM
-                    // value.
-                    analogWrite(_pinPwm, _volume * 4);
+										this->tone((int)ftFreq);		// start playing the new tone
                 }
                 duration *= (QUARTER_NOTES_PER_MINUTE / _tempo);
-                _scheduler.once(duration * durationRatio, &MusicEngine::musicTickerCallback, this);
+                _pause=duration * durationRatio;
+								this->waitTone(_pause*1000);		// schedule to wait until tone is done
                 _pause = duration * (1 - durationRatio);
             }
         } while (freqIndex == -1);
@@ -282,6 +316,93 @@ void MusicEngine::musicTickerCallback(MusicEngine* __thisMusicEngine)
 {
     __thisMusicEngine->executeCommand();
 }
+
+
+
+// ATmega Timer2 tone function derived from ToneAC2 library code: https://bitbucket.org/teckel12/arduino-toneac2/
+#if !defined(ARDUINO_ARCH_ESP8266)
+		// #elif defined (__AVR_ATmega328P__) ||  defined (__AVR_ATmega328__) ||  defined (__AVR_ATmega168__)  ||  defined (__AVR_ATmega168P__) 
+		// #elif defined (ARDUINO_UNO) ||  defined(ARDUINO_AVR_MEGA2560)
+		unsigned long _tTim2_time; // Used to track end note with timer when playing note in the background.
+		volatile uint8_t *_pinMode;     // Pin mode.
+		uint8_t _pinMask = 0;        // Bitmask for pins
+		volatile uint8_t *_pinOutput; // Output port register for pin.
+		const int _tTim2_prescale[] = { 2, 16, 64, 128, 256, 512, 2048 }; // Prescaler.
+		MusicEngine* __thisMusicEngine__;		// TODO: unfortunately I know no better way to call an instance method from the ISR than by using a global reference
+
+void MusicEngine::_toneTim2(uint8_t pin, unsigned int frequency, unsigned long length)
+{	// playing a tone
+  long top;
+  uint8_t prescaler;
+
+  for (prescaler = 1; prescaler < 8; prescaler++) { // Find the appropriate prescaler
+    top = F_CPU / (long) frequency / (long) _tTim2_prescale[prescaler - 1] - 1; // Calculate the top.
+    if (top < 256) break; // Fits, break out of for loop.
+  }
+  if (top > 255) { _noToneTim2(); return; } // Frequency is out of range, turn off sound and return.
+
+  if (length > 0) _tTim2_time = millis() + length - 1; else _tTim2_time = 0xFFFFFFFF; // Set when the note should end, or play "forever".
+
+  if (_pinMask == 0) { // This gets the port register and bitmap for the pin and sets the pin to output mode.
+    _pinMask   = digitalPinToBitMask(pin);                            // Get the port register bitmask for pin.
+    _pinOutput = portOutputRegister(digitalPinToPort(pin));           // Get the output port register for pin.
+    _pinMode   = (uint8_t *) portModeRegister(digitalPinToPort(pin)); // Get the port mode register for pin.
+    *_pinMode |= _pinMask; // Set pin to Output mode.
+  }
+
+	// TODO: find out how to implement interrupts in class to get rid of globals and non-privates
+	__thisMusicEngine__=this;
+
+  OCR2A   = top;                     // Set the top.
+  if (TCNT2 > top) TCNT2 = top;      // Counter over the top, put within range.
+  TCCR2B  = _BV(WGM22) | prescaler;  // Set Fast PWM and prescaler.
+  TCCR2A  = _BV(WGM20) | _BV(WGM21); // Fast PWM and normal port operation, OC2A/OC2B disconnected.
+  //TIMSK2 &= ~_BV(OCIE2A);            // Stop timer 2 interrupt while we set the pin states.
+  TIMSK2 |= _BV(OCIE2A);             // Activate the timer interrupt.
+}
+
+void MusicEngine::_noToneTim2(void)
+{	// stop playing any tone
+    TIMSK2 &= ~_BV(OCIE2A);     // Remove the timer interrupt.
+    TCCR2B  = _BV(CS22);        // Default clock prescaler of 64.
+    TCCR2A  = _BV(WGM20);       // Set to defaults so PWM can work like normal (PWM, phase corrected, 8bit).
+    *_pinMode &= ~_pinMask;   // Set pin to INPUT.
+    _pinMask = 0; // Flag so we know note is no longer playing.
+}
+
+void MusicEngine::_executeCommandTim2(void)
+{
+  	executeCommand();
+}
+
+void MusicEngine::_waitToneTim2(unsigned long length)
+{   // set endtime of tone (or no tone) playing to allow callback at end of tone
+    // TODO: find out how to implement interrupts in class to get rid of globals and non-privates
+    __thisMusicEngine__=this;		// need to be set in both tone and in wait to be able to call executeCommand
+
+    _tTim2_time = millis() + length - 1;
+    TIMSK2 |= _BV(OCIE2A);             // Activate the timer interrupt.
+}
+
+ISR(TIMER2_COMPA_vect)
+{ // Timer interrupt vector.
+  if(!__thisMusicEngine__)
+  	return;
+  if (millis() > _tTim2_time)
+  {
+    __thisMusicEngine__->_noToneTim2(); // Check to see if it's time for the note to end.
+    __thisMusicEngine__->_executeCommandTim2();		// execute the next command
+  }
+  else
+	  *_pinOutput ^= _pinMask; // Toggle the pin state.
+}
+#endif
+
+
+
+
+
+
 
 // clang-format off
 const float MusicEngine::PERIOD_TABLE[] = {

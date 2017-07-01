@@ -1,6 +1,11 @@
 #ifndef __MUSICENGINE_H__
 #define __MUSICENGINE_H__
+#include <Arduino.h>
+#if defined(ARDUINO_ARCH_ESP8266)
 #include <Ticker.h>
+#else
+// for ATmega we'll use redefinition of Timer2 (on 328/168) and portmanipulation
+#endif
 
 class MusicEngine {
 public:
@@ -8,6 +13,13 @@ public:
       * @param pin pin used to generate the note frequencies
     */
     MusicEngine(int pin);
+
+    /** Support for Arduino tone() replacements, needed to use Timer2 on ATmega
+    */
+    void tone(unsigned int frequency, unsigned long length=0);
+	  void noTone();
+	  void waitTone(unsigned long length=0);
+
 
     /** Starts playing a new MML sequence. If one is already playing it is stopped and the new
      * sequences started.
@@ -30,6 +42,15 @@ public:
         _completionCallback = function;
     }
 
+#if !defined(ARDUINO_ARCH_ESP8266)
+		// Timer2 is used for atmega
+		void _toneTim2(uint8_t pin, unsigned int frequency = 0, unsigned long length = 0);
+		void _noToneTim2(void);
+		void _waitToneTim2(unsigned long length);
+		void _executeCommandTim2(void);
+#endif
+
+
 private:
     void executeCommand();
     int getNumber(int min, int max);
@@ -49,7 +70,11 @@ private:
     float _pause;
     int _tempo;
     int _volume;
-    Ticker _scheduler;
+#if defined (ARDUINO_ARCH_ESP8266)
+    Ticker     _scheduler;
+#else
+    //MsTimer2   _scheduler;
+#endif
 
     void (*_completionCallback)(void);
     static void musicTickerCallback(MusicEngine*);
