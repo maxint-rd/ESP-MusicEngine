@@ -24,10 +24,11 @@ MusicEngine music(BUZ_PIN);
 
 // Reserve a buffer for playing the notes received via the serial console.
 // Note that this buffer should remain available while playing.
-char szBuf[256]; // serial buffer seems to be only 128 bytes
+char szBuf[128]; // serial buffer seems to be 128 bytes on ESP8266 and only on ATmeg328/168
 
 void fnCompleted(void)
-{   // callback function to notify completion
+{   // Callback function to notify completion
+    // Note that this funtion is called in an interrupt, so keep it short.
     Serial.print(F("\nDone playing.\nPlease type new notes to play something else."));
 }
 
