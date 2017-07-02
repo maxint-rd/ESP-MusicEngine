@@ -1,6 +1,6 @@
 /*
  * MusicEngine Serial
- * MusicEngine library example for ESP8266 in Arduino IDE
+ * MusicEngine library example for ESP8266/ATmega in Arduino IDE
  * see https://github.com/maxint-rd/ESP-MusicEngine
  *
  * by MMOLE (@maxint-rd)
@@ -24,7 +24,7 @@ MusicEngine music(BUZ_PIN);
 
 // Reserve a buffer for playing the notes received via the serial console.
 // Note that this buffer should remain available while playing.
-char szBuf[128]; // serial buffer seems to be 128 bytes on ESP8266 and only on ATmeg328/168
+char szBuf[128]; // serial buffer seems to be 128 bytes on ESP8266 and only on ATmega328/168
 
 void fnCompleted(void)
 {   // Callback function to notify completion
