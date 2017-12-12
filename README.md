@@ -60,3 +60,8 @@ Command | Description
 
 The supported MML-commands are a subset that may not completely cover all available music scores.
 If notes seem missing, check your score against the syntax above and replace unknown commands by equivalent supported alternatives. The music notation is case-insensitive. Spaces are not required but can be used for readability.
+
+### Features & limitations
+- The current version of this library supports ESP8266 and Atmel ATmega328 and ATmega168 MCUs. Support for ATtiny85 is being added, so stay tuned!
+- This version currently supports only single channel playback on a buzzer of speaker. Playback using a complex sound generator is under investigation.
+- Known bug: when ending the play-string with a number (eg. "T120 O4 G16") the player may read beyond the end of the string and play whatever is next in memory. Workaround: use alternative notation (eg. "T120 O4 L16 G") or an addional terminator (eg. "T120 O4 G16\0").
