@@ -1,7 +1,7 @@
 # ESP-MusicEngine
 
 ## DEPRECATED / NOT MAINTAINED
-This library is replaced by the [MmlMusicPWM](https://github.com/maxint-rd/MmlMusicPWM) library, which is an extention of the new device independant [MML Music](https://github.com/maxint-rd/MmlMusic) library. That library supports not only the ESP8266, but also various Atmel MCUs, such as the ATmega328 and Atmega168 and even the ATtiny85. The MmlMusic base library also supports playing polyphone MML music from multiple tracks on multi-channel sound devices such as the SN76489 complex sound generator.
+This library is replaced by the [MmlMusicPWM](https://github.com/maxint-rd/MmlMusicPWM) library, which is an extension of the new device independant [MML Music](https://github.com/maxint-rd/MmlMusic) library. That library supports not only the ESP8266, but also various Atmel MCUs, such as the ATmega328 and Atmega168 and even the ATtiny85. The MmlMusic base library also supports playing polyphone MML music from multiple tracks on multi-channel sound devices such as the SN76489 complex sound generator.
 
 ### Credits/references
 MusicEngine library ported from mBed to Arduino (tested IDE v1.6.10 and v1.8.2). Supports ESP8266 and ATmega (tested 328 and 168)<br>
